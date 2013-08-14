@@ -16,13 +16,6 @@ A typical use case of stored state is an atom with a array containing data:
 
 In the case above, the best option would be to construct a `ref` containing an array of `ref`s containing data. What hara offers is essentially functions that manipulate this structure (which is given the name `ova`).
 
-### Installation:
-
-In project.clj, add to dependencies:
-
-     [im.chit/ova "0.9.1"]
-
-
 ## ova.core
 
 The main data structure supporting state-based manipulation of records is called an `ova`. Its a useful structure to have as a shared state. I use it as a transactional general purpose store that is the intermediary between the main application, the database and the web presentation layer when there is a need for data to be stored in memory and acted upon in some way by multiple threads.
