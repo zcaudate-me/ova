@@ -7,17 +7,9 @@
 (ns ova.core
   (:require [clojure.string :as s]
             [clojure.set :as set]
-            [ova.fn :refer [suppress get-> pcheck-> check-> suppress-pcheck]]))
-
-(defn hash-keyword
-  "Returns a keyword repesentation of the hash-code.
-   For use in generating internally unique keys
-
-    (h/hash-keyword 1)
-    ;=> :__1__
-  "
-  [obj & ids]
-  (keyword (str "__" (s/join "_" (concat (map str ids) [(.hashCode obj)])) "__")))
+            [hara.common.error :refer [suppress]]
+            [hara.common.fn :refer [get-> pcheck-> check-> suppress-pcheck]]
+            [hara.state :refer [hash-keyword]]))
 
 (defprotocol OvaProtocol
   (empty! [ova])
@@ -330,48 +322,26 @@
     (delete-indices ova idx))
   ova)
 
-(defn- -smap!> [ova pchk form]
-  (cond (list? form)
-        (apply list smap! ova pchk form)
-        :else
-        (list smap! ova pchk form)))
+(defn !! [ova pchk val]
+  (smap! ova pchk (constantly val)))
 
-(defmacro !> [ova pchk & forms]
-  (cons 'do
-        (for [form forms]
-          (-smap!> ova pchk form))))
+(defmacro !> [ova pchk f & args]
+  `(smap! ~ova ~pchk ~f ~@args))
 
-(defn !>set [ova chk val]
-  (smap! ova chk (constantly val)))
+(defmacro !>> [ova pchk & forms]
+  `(do
+     ~@(for [[f & args] forms]
+         `(smap! ~ova ~pchk ~f ~@args))))
 
-(defn !>into [ova chk val]
-  (smap! ova chk into val))
-
-(defn !>assoc [ova chk & kvs]
-  (apply smap! ova chk assoc kvs))
-
-(defn !>assoc-in [ova chk ks v]
-  (smap! ova chk assoc-in ks v))
-
-(defn !>dissoc [ova chk k & ks]
-  (apply smap! ova chk dissoc k ks))
-
-(defn !>update-in [ova chk ks f]
-  (smap! ova chk update-in ks f))
-
-(defn !>merge [ova chk m & ms]
-  (apply smap! ova chk merge m ms))
 
 (comment
   (def ov (ova [{}]))
 
-  (dosync (!> ov 0
-              (assoc-in [:a :b] 1)
-              (update-in [:a :b] inc)
-              (assoc :c 3))
+  (dosync (!>> ov 0
+               (assoc-in [:a :b] 1)
+               (update-in [:a :b] inc)
+               (assoc :c 3))
           )
 
+  (dosync (!> ov 0 assoc :d 1))
 )
-
-
-;;(dosync (reinit! (ova [1 2 3 4]) [2 3 4 5 6]))
