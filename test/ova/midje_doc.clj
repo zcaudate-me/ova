@@ -19,6 +19,13 @@ In the case above, the best option would be or to construct a `ref` containing a
 
 [[:chapter {:title "Installation"}]]
 
+"Add to `project.clj`"
+
+[[{:numbered false}]]
+(comment [im.chit/ova "0.9.1"])
+
+"All functions are in the `ova.core` namespace."
+
 [[:chapter {:title "Creating"}]]
 [[:section {:title "ova"}]]
 "An `ova` deals with data in a vector."
