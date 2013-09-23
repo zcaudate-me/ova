@@ -1,0 +1,632 @@
+<html><head><meta content="chrome=1" http-equiv="X-UA-Compatible" /><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport" /><title>ova</title><style>body {
+  padding:50px;
+  font:14px/1.5 Helvetica, Arial, sans-serif;
+  color:#777;
+  font-weight:300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color:#222;
+  margin:0 0 20px;
+}
+
+p, ul, ol, table, pre, dl {
+  margin:0 0 20px;
+}
+
+h1, h2, h3 {
+  line-height:1.1;
+}
+
+h1 {
+  font-size:28px;
+}
+
+h2 {
+  color:#393939;
+}
+
+h4, h5, h6 {
+  color:#494949;
+  margin:0;
+}
+
+header h4{
+  margin: 10 0 0 0px;
+}
+
+a {
+  color:#39c;
+  font-weight:400;
+  text-decoration:none;
+}
+
+a small {
+  font-size:11px;
+  color:#777;
+  margin-top:-0.6em;
+  display:block;
+}
+
+.wrapper {
+  width:860px;
+  margin:0 auto;
+}
+
+.figure div.img {
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+blockquote {
+  border-left:1px solid #e5e5e5;
+  margin:0;
+  padding:0 0 0 20px;
+  font-style:italic;
+}
+
+code, pre {
+  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  color:#333;
+  font-size:12px;
+}
+
+pre {
+  padding:8px 15px;
+  background: #f8f8f8;  
+  border-radius:5px;
+  border:1px solid #e5e5e5;
+  overflow-x: auto;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+th, td {
+  text-align:left;
+  padding:5px 10px;
+  border-bottom:1px solid #e5e5e5;
+}
+
+dt {
+  color:#444;
+  font-weight:700;
+}
+
+th {
+  color:#444;
+}
+
+img {
+  max-width:100%;
+}
+
+header {
+  width:270px;
+  float:left;
+  /*position:fixed;*/
+}
+
+header ul {
+  list-style:none;
+  height:40px;
+  
+  padding:0;
+  
+  background: #eee;
+  background: -moz-linear-gradient(top, #f8f8f8 0%, #dddddd 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#dddddd));
+  background: -webkit-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  background: -o-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  background: -ms-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  background: linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  
+  border-radius:5px;
+  border:1px solid #d2d2d2;
+  box-shadow:inset #fff 0 1px 0, inset rgba(0,0,0,0.03) 0 -1px 0;
+  width:270px;
+}
+
+header li {
+  width:89px;
+  float:left;
+  border-right:1px solid #d2d2d2;
+  height:40px;
+}
+
+header ul a {
+  line-height:1;
+  font-size:11px;
+  color:#999;
+  display:block;
+  text-align:center;
+  padding-top:6px;
+  height:40px;
+}
+
+strong {
+  font-weight:700;
+}
+
+header ul li + li {
+  width:88px;
+  border-left:1px solid #fff;
+}
+
+header ul li + li + li {
+  border-right:none;
+  width:89px;
+}
+
+header ul a strong {
+  font-size:14px;
+  display:block;
+  color:#222;
+}
+
+section {
+  width: 60%;
+  float:right;
+  padding-bottom:50px;
+  padding-right: 10%;
+}
+
+small {
+  font-size:11px;
+}
+
+hr {
+  border:0;
+  background:#e5e5e5;
+  height:1px;
+  margin:0 0 20px;
+}
+
+footer {
+  width:270px;
+  float:left;
+  position:fixed;
+  bottom:50px;
+}
+
+header div.heading {
+  display:none;
+}
+
+
+@media print, screen and (max-width: 960px) {
+  
+  div.wrapper {
+    width:auto;
+    margin:0;
+  }
+  
+  header, section, footer {
+    float:none;
+    position:static;
+    width:auto;
+  }
+  
+  header div.heading {
+    display:block;
+  }
+    
+  section div.heading {
+    display:none;
+  }
+  
+  section {
+    border:1px solid #e5e5e5;
+    border-width:1px 0;
+    padding:20px 0;
+    margin:0 0 20px;
+  }
+  
+  header a small {
+    display:inline;
+  }
+  
+  header ul {
+    position:absolute;
+    right:50px;
+    top:52px;
+  }
+}
+
+@media print, screen and (max-width: 720px) {
+  body {
+    word-wrap:break-word;
+  }
+  
+  header {
+    padding:0;
+  }
+  
+  header ul, header p.view {
+    position:static;
+  }
+  
+  pre, code {
+    word-wrap:normal;
+  }
+}
+
+@media print, screen and (max-width: 480px) {
+  body {
+    padding:15px;
+  }
+  
+  header ul {
+    display:none;
+  }
+}
+
+@media print {
+  body {
+    padding:0.4in;
+    font-size:12pt;
+    color:#444;
+  }
+}
+
+
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold; } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+
+.type-csharp .highlight .k { color: #0000FF }
+.type-csharp .highlight .kt { color: #0000FF }
+.type-csharp .highlight .nf { color: #000000; font-weight: normal }
+.type-csharp .highlight .nc { color: #2B91AF }
+.type-csharp .highlight .nn { color: #000000 }
+.type-csharp .highlight .s { color: #A31515 }
+.type-csharp .highlight .sc { color: #A31515 }
+
+
+</style></head><body><header><div class="heading"><h1>ova</h1><h3>stateful arrays for clojure</h3><hr /><div class="info"><h5>Author: Chris Zheng<b>&nbsp;&nbsp;<a href="mailto:z@caudate.me">(z@caudate.me)</a></b></h5><h5>Library: v0.9.1</h5><h5>Date: 23 September 2013</h5><h5>Website: <a href="http://github.com/zcaudate/ova">http://github.com/zcaudate/ova</a></h5><h5>Generated By: <a href="http://www.github.com/zcaudate/lein-midje-doc">MidjeDoc</a></h5></div><br /><hr /></div><h4><a href="#motivation">1 &nbsp; Motivation</a></h4><h4><a href="#installation">2 &nbsp; Installation</a></h4><h4><a href="#creating">3 &nbsp; Creating</a></h4><h5>&nbsp;&nbsp;<i><a href="#ova">3.1 &nbsp; ova</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#persistent!">3.2 &nbsp; persistent!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#reinit!">3.3 &nbsp; reinit!</a></i></h5><h4><a href="#selecting">4 &nbsp; Selecting</a></h4><h5>&nbsp;&nbsp;<i><a href="#select">4.1 &nbsp; select</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#using-index">4.1.1 &nbsp; using index</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#using-vector">4.1.2 &nbsp; using vector</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#nested-maps">4.1.3 &nbsp; nested maps</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#using-sets">4.1.4 &nbsp; using sets</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#ifn">4.2 &nbsp; IFn</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#using-index">4.2.1 &nbsp; using index</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#using-ids">4.2.2 &nbsp; using ids</a></i></h5><h5>&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="#not-found">4.2.3 &nbsp; not found</a></i></h5><h4><a href="#inserting">5 &nbsp; Inserting</a></h4><h5>&nbsp;&nbsp;<i><a href="#append!">5.1 &nbsp; append!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#concat!">5.2 &nbsp; concat!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#insert!">5.3 &nbsp; insert!</a></i></h5><h4><a href="#deleting">6 &nbsp; Deleting</a></h4><h5>&nbsp;&nbsp;<i><a href="#empty!">6.1 &nbsp; empty!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#remove!">6.2 &nbsp; remove!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#filter!">6.3 &nbsp; filter!</a></i></h5><h4><a href="#sorting">7 &nbsp; Sorting</a></h4><h5>&nbsp;&nbsp;<i><a href="#sort!">7.1 &nbsp; sort!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#reverse!">7.2 &nbsp; reverse!</a></i></h5><h4><a href="#updating">8 &nbsp; Updating</a></h4><h5>&nbsp;&nbsp;<i><a href="#!!">8.1 &nbsp; !!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#map!">8.2 &nbsp; map!</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#smap!">8.3 &nbsp; smap!</a></i></h5><h4><a href="#watch-for-changes">9 &nbsp; Watch for Changes</a></h4><h5>&nbsp;&nbsp;<i><a href="#add-elem-watch">9.1 &nbsp; add-elem-watch</a></i></h5><h5>&nbsp;&nbsp;<i><a href="#remove-elem-watch">9.2 &nbsp; remove-elem-watch</a></i></h5><br /></header><section><div class="heading"><h1>ova</h1><h3>stateful arrays for clojure</h3><hr /><div class="info"><h5>Author: Chris Zheng<b>&nbsp;&nbsp;<a href="mailto:z@caudate.me">(z@caudate.me)</a></b></h5><h5>Library: v0.9.1</h5><h5>Date: 23 September 2013</h5><h5>Website: <a href="http://github.com/zcaudate/ova">http://github.com/zcaudate/ova</a></h5><h5>Generated By: <a href="http://www.github.com/zcaudate/lein-midje-doc">MidjeDoc</a></h5></div><br /><hr /></div><div><a name="motivation"></a><h2><b>1 &nbsp;&nbsp; Motivation</b></h2></div><div><p><em>Isn't the whole point of clojure to move to a more functional style of programming using immutable data structures?</em></p><p>Yes. Exactly. Clojure has rid of alot of complexity on the jvm by requiring the programmer to think functionally. However, the issue of shared state is still a problem in multithreaded applications. Clojure has <code>ref</code>'s and <code>atom</code>'s to resolve this issue but they tend to be a little basic.</p><p>A typical use case of shared state is an array within a <code>ref</code>:</p><ul><li>Elements containing data can be added or removed from an array.</li><li>The data within each element can change.</li><li>The data has to be accessible by a number of threads.</li></ul><p>In the case above, the best option would be or to construct a <code>ref</code> containing a vector of <code>ref</code>'s containing data. <code>ova</code> is just such a datastructure.</p></div><div><a name="installation"></a><h2><b>2 &nbsp;&nbsp; Installation</b></h2></div><div><a name="creating"></a><h2><b>3 &nbsp;&nbsp; Creating</b></h2></div><div><a name="ova"></a><h3>3.1 &nbsp;&nbsp; ova</h3></div><div><p>An <code>ova</code> deals with data in a vector.</p></div><div><a name="creating-an-ova---primitives"></a><h4><i>e.3.1  &nbsp;-&nbsp; Creating an ova - primitives</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov-pr</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">-&gt; </span><span class="nv">ov-pr</span> <span class="nv">type</span> <span class="nv">str</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="s">&quot;class ova.core.Ova&quot;</span>
+</pre></div>
+</div><div><p>Although it can deal with primitives, an <code>ova</code> is most useful when the elements of the vector are maps.</p></div><div><a name="ov-data"></a><h4><i>e.3.2  &nbsp;-&nbsp; Creating an ova - maps</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">RESULTS</span> 
+    <span class="p">[{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a2</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;John&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a3</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;Dave&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a4</span> <span class="ss">:score</span> <span class="mi">11</span> <span class="ss">:name</span> <span class="s">&quot;Henry&quot;</span> <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a5</span> <span class="ss">:score</span> <span class="mi">20</span> <span class="ss">:name</span> <span class="s">&quot;Scott&quot;</span> <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a6</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Tom&quot;</span>   <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a7</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;Jill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a8</span> <span class="ss">:score</span> <span class="mi">19</span> <span class="ss">:name</span> <span class="s">&quot;Sally&quot;</span> <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a9</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Rose&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}])</span>
+<span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="nv">RESULTS</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">-&gt; </span><span class="nv">ov-pr</span> <span class="nv">type</span> <span class="nv">str</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="s">&quot;class ova.core.Ova&quot;</span>
+</pre></div>
+</div><div><a name="persistent!"></a><h3>3.2 &nbsp;&nbsp; persistent!</h3></div><div><p>Since <code>ova.core.Ova</code> implements the <code>clojure.lang.ITransientCollection</code> interface, it can be made persistent with <code>persistent!</code>.</p></div><div><a name="make-persistent"></a><h4><i>e.3.3  &nbsp;-&nbsp; Make persistent</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">persistent!</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="shorthand"></a><h4><i>e.3.4  &nbsp;-&nbsp; Shorthand</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="reinit!"></a><h3>3.3 &nbsp;&nbsp; reinit!</h3></div><div><p><code>reinit!</code> resets the data elements in an ova to another set of values.</p></div><div><h4><i>e.3.5</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">reinit!</span> <span class="nv">ov</span> <span class="p">[</span><span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nf">persistent!</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="selecting"></a><h2><b>4 &nbsp;&nbsp; Selecting</b></h2></div><div><p>Selecting of elements have been made as easy a possible</p></div><div><h4><i>e.4.1</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="nv">RESULTS</span><span class="p">))</span>
+</pre></div>
+</div><div><a name="select"></a><h3>4.1 &nbsp;&nbsp; select</h3></div><div><a name="using-index"></a><h3><i>4.1.1 &nbsp;&nbsp; using index</i></h3></div><div><h4><i>e.4.2</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.3</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a2</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;John&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><a name="using-vector"></a><h3><i>4.1.2 &nbsp;&nbsp; using vector</i></h3></div><div><h4><i>e.4.4</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="p">[</span><span class="ss">:id</span> <span class="ss">:a1</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.5</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="p">[</span><span class="ss">:gender</span> <span class="ss">:f</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a7</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;Jill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a8</span> <span class="ss">:score</span> <span class="mi">19</span> <span class="ss">:name</span> <span class="s">&quot;Sally&quot;</span> <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a9</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Rose&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.6</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="p">[</span><span class="ss">:score</span> <span class="mi">13</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a6</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Tom&quot;</span>   <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a9</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Rose&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.7</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="p">[</span><span class="ss">:score</span> <span class="nv">even?</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a5</span> <span class="ss">:score</span> <span class="mi">20</span> <span class="ss">:name</span> <span class="s">&quot;Scott&quot;</span> <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.8</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="o">#</span><span class="p">(</span><span class="nb">-&gt; </span><span class="nv">%</span> <span class="ss">:score</span> <span class="p">(</span><span class="nb">&lt; </span><span class="mi">13</span><span class="p">)))</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+    <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a4</span> <span class="ss">:score</span> <span class="mi">11</span> <span class="ss">:name</span> <span class="s">&quot;Henry&quot;</span> <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.9</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="p">[</span><span class="ss">:score</span> <span class="o">&#39;</span><span class="p">(</span><span class="nb">&lt; </span><span class="mi">13</span><span class="p">)])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a4</span> <span class="ss">:score</span> <span class="mi">11</span> <span class="ss">:name</span> <span class="s">&quot;Henry&quot;</span> <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.10</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="p">[</span><span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:gender</span> <span class="ss">:f</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a9</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Rose&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><a name="nested-maps"></a><h3><i>4.1.3 &nbsp;&nbsp; nested maps</i></h3></div><div><h4><i>e.4.11</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="p">(</span><span class="nf">ova</span> <span class="p">[{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}}}])</span>
+          <span class="p">[[</span><span class="ss">:l1</span> <span class="ss">:l2</span> <span class="ss">:l3</span><span class="p">]</span> <span class="s">&quot;val&quot;</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}}}}</span>
+</pre></div>
+</div><div><h4><i>e.4.12</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="p">(</span><span class="nf">ova</span> <span class="p">[{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span> 
+                     <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}])</span>
+          <span class="o">#</span><span class="p">(</span><span class="nb">-&gt; </span><span class="nv">%</span> <span class="ss">:l1</span> <span class="ss">:flag</span><span class="p">))</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span>
+           <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}}</span>
+</pre></div>
+</div><div><h4><i>e.4.13</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="p">(</span><span class="nf">ova</span> <span class="p">[{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span> 
+                     <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}])</span>
+          <span class="p">[</span><span class="ss">:l1</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:flag</span><span class="p">)])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span>
+           <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}}</span>
+</pre></div>
+</div><div><h4><i>e.4.14</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="p">(</span><span class="nf">ova</span> <span class="p">[{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span> 
+                     <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}])</span>
+          <span class="p">[[</span><span class="ss">:l1</span> <span class="ss">:flag</span><span class="p">]</span> <span class="nv">true</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span>
+           <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}}</span>
+</pre></div>
+</div><div><h4><i>e.4.15</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="p">(</span><span class="nf">ova</span> <span class="p">[{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span> 
+                     <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}])</span>
+          <span class="p">[[</span><span class="ss">:l1</span> <span class="ss">:l2</span> <span class="ss">:l3</span><span class="p">]</span> <span class="s">&quot;val&quot;</span> <span class="p">[</span><span class="ss">:l1</span> <span class="ss">:flag</span><span class="p">]</span> <span class="nv">true</span><span class="p">])</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:l1</span> <span class="p">{</span><span class="ss">:l2</span> <span class="p">{</span><span class="ss">:l3</span> <span class="s">&quot;val&quot;</span><span class="p">}</span>
+          <span class="ss">:flag</span> <span class="nv">true</span><span class="p">}}}</span>
+</pre></div>
+</div><div><a name="using-sets"></a><h3><i>4.1.4 &nbsp;&nbsp; using sets</i></h3></div><div><h4><i>e.4.16</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="o">#</span><span class="p">{</span><span class="mi">0</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a2</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;John&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><h4><i>e.4.17</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">select </span><span class="nv">ov</span> <span class="o">#</span><span class="p">{[</span><span class="ss">:score</span> <span class="nv">even?</span><span class="p">]</span> <span class="p">[</span><span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:gender</span> <span class="ss">:f</span><span class="p">]})</span>
+
+<span class="nv">=&gt;</span> <span class="o">#</span><span class="p">{{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a5</span> <span class="ss">:score</span> <span class="mi">20</span> <span class="ss">:name</span> <span class="s">&quot;Scott&quot;</span> <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:usa</span><span class="p">}</span>
+     <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a9</span> <span class="ss">:score</span> <span class="mi">13</span> <span class="ss">:name</span> <span class="s">&quot;Rose&quot;</span>  <span class="ss">:gender</span> <span class="ss">:f</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}}</span>
+</pre></div>
+</div><div><a name="ifn"></a><h3>4.2 &nbsp;&nbsp; IFn</h3></div><div><a name="using-index"></a><h3><i>4.2.1 &nbsp;&nbsp; using index</i></h3></div><div><h4><i>e.4.18</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">ov</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a1</span> <span class="ss">:score</span> <span class="mi">10</span> <span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+</pre></div>
+</div><div><h4><i>e.4.19</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">ov</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a2</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;John&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+</pre></div>
+</div><div><a name="using-ids"></a><h3><i>4.2.2 &nbsp;&nbsp; using ids</i></h3></div><div><h4><i>e.4.20</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">ov</span> <span class="ss">:a3</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a3</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;Dave&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+</pre></div>
+</div><div><h4><i>e.4.21</i></h4><div class="highlight"><pre><span class="p">(</span><span class="ss">:a3</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">{</span><span class="ss">:id</span> <span class="ss">:a3</span> <span class="ss">:score</span> <span class="mi">15</span> <span class="ss">:name</span> <span class="s">&quot;Dave&quot;</span>  <span class="ss">:gender</span> <span class="ss">:m</span> <span class="ss">:nationality</span> <span class="ss">:aus</span><span class="p">}</span>
+</pre></div>
+</div><div><a name="not-found"></a><h3><i>4.2.3 &nbsp;&nbsp; not found</i></h3></div><div><h4><i>e.4.22</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">ov</span> <span class="ss">:a10</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="nv">nil</span>
+</pre></div>
+</div><div><a name="inserting"></a><h2><b>5 &nbsp;&nbsp; Inserting</b></h2></div><div><a name="append!"></a><h3>5.1 &nbsp;&nbsp; append!</h3></div><div><h4><i>e.5.1</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">append!</span> <span class="nv">ov</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="concat!"></a><h3>5.2 &nbsp;&nbsp; concat!</h3></div><div><h4><i>e.5.2</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">concat!</span> <span class="nv">ov</span> <span class="p">[</span><span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span><span class="p">]))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="insert!"></a><h3>5.3 &nbsp;&nbsp; insert!</h3></div><div><h4><i>e.5.3</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="ss">:a</span> <span class="ss">:b</span> <span class="ss">:c</span> <span class="ss">:e</span> <span class="ss">:f</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">insert!</span> <span class="nv">ov</span> <span class="ss">:d</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="ss">:a</span> <span class="ss">:b</span> <span class="ss">:c</span> <span class="ss">:d</span> <span class="ss">:e</span> <span class="ss">:f</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="deleting"></a><h2><b>6 &nbsp;&nbsp; Deleting</b></h2></div><div><a name="empty!"></a><h3>6.1 &nbsp;&nbsp; empty!</h3></div><div><h4><i>e.6.1</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="ss">:a</span> <span class="ss">:b</span> <span class="ss">:c</span> <span class="ss">:d</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">empty!</span> <span class="nv">ov</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[]</span>
+</pre></div>
+</div><div><a name="remove!"></a><h3>6.2 &nbsp;&nbsp; remove!</h3></div><div><h4><i>e.6.2</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="ss">:a</span> <span class="ss">:b</span> <span class="ss">:c</span> <span class="ss">:d</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">remove!</span> <span class="nv">ov</span> <span class="o">&#39;</span><span class="p">(</span><span class="nb">= </span><span class="ss">:a</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="ss">:b</span> <span class="ss">:c</span> <span class="ss">:d</span><span class="p">]</span>
+</pre></div>
+</div><div><h4><i>e.6.3</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">remove!</span> <span class="nv">ov</span> <span class="o">#</span><span class="p">{</span><span class="o">&#39;</span><span class="p">(</span><span class="nb">&lt; </span><span class="mi">3</span><span class="p">)</span> <span class="o">&#39;</span><span class="p">(</span><span class="nb">&gt; </span><span class="mi">6</span><span class="p">)}))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="filter!"></a><h3>6.3 &nbsp;&nbsp; filter!</h3></div><div><h4><i>e.6.4</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="ss">:a</span> <span class="ss">:b</span> <span class="ss">:c</span> <span class="ss">:d</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">filter!</span> <span class="nv">ov</span> <span class="o">&#39;</span><span class="p">(</span><span class="nb">= </span><span class="ss">:a</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="ss">:a</span><span class="p">]</span>
+</pre></div>
+</div><div><h4><i>e.6.5</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">filter!</span> <span class="nv">ov</span> <span class="o">#</span><span class="p">{</span><span class="o">&#39;</span><span class="p">(</span><span class="nb">&lt; </span><span class="mi">3</span><span class="p">)</span> <span class="o">&#39;</span><span class="p">(</span><span class="nb">&gt; </span><span class="mi">6</span><span class="p">)}))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="sorting"></a><h2><b>7 &nbsp;&nbsp; Sorting</b></h2></div><div><a name="sort!"></a><h3>7.1 &nbsp;&nbsp; sort!</h3></div><div><h4><i>e.7.1</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">9</span> <span class="mi">8</span> <span class="mi">7</span> <span class="mi">6</span> <span class="mi">5</span> <span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">sort!</span> <span class="nv">ov</span> <span class="nv">&lt;</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div><div><h4><i>e.7.2</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">sort!</span> <span class="nv">ov</span> <span class="nv">&gt;</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">9</span> <span class="mi">8</span> <span class="mi">7</span> <span class="mi">6</span> <span class="mi">5</span> <span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="reverse!"></a><h3>7.2 &nbsp;&nbsp; reverse!</h3></div><div><h4><i>e.7.3</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">reverse!</span> <span class="nv">ov</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">9</span> <span class="mi">8</span> <span class="mi">7</span> <span class="mi">6</span> <span class="mi">5</span> <span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="updating"></a><h2><b>8 &nbsp;&nbsp; Updating</b></h2></div><div><a name="!!"></a><h3>8.1 &nbsp;&nbsp; !!</h3></div><div><h4><i>e.8.1</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">!!</span> <span class="nv">ov</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div><div><h4><i>e.8.2</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">!!</span> <span class="nv">ov</span> <span class="nv">odd?</span> <span class="mi">0</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">6</span> <span class="mi">0</span> <span class="mi">8</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div><div><h4><i>e.8.3</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">!!</span> <span class="nv">ov</span> <span class="o">&#39;</span><span class="p">(</span><span class="nb">&gt; </span><span class="mi">4</span><span class="p">)</span> <span class="mi">0</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="map!"></a><h3>8.2 &nbsp;&nbsp; map!</h3></div><div><h4><i>e.8.4</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">map!</span> <span class="nv">ov</span> <span class="nv">inc</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="smap!"></a><h3>8.3 &nbsp;&nbsp; smap!</h3></div><div><h4><i>e.8.5</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">smap!</span> <span class="nv">ov</span> <span class="nv">odd?</span> <span class="nv">inc</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">4</span> <span class="mi">6</span> <span class="mi">6</span> <span class="mi">8</span> <span class="mi">8</span> <span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div><div><h4><i>e.8.6</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span> <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">]))</span>
+<span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">!&gt;</span> <span class="nv">ov</span> <span class="nv">odd?</span> <span class="nv">inc</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">4</span> <span class="mi">6</span> <span class="mi">6</span> <span class="mi">8</span> <span class="mi">8</span> <span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="watch-for-changes"></a><h2><b>9 &nbsp;&nbsp; Watch for Changes</b></h2></div><div><a name="add-elem-watch"></a><h3>9.1 &nbsp;&nbsp; add-elem-watch</h3></div><div><h4><i>e.9.1</i></h4><div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">ov</span>     <span class="p">(</span><span class="nf">ova</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="p">(</span><span class="k">def </span><span class="nv">watch</span>  <span class="p">(</span><span class="nf">atom</span> <span class="p">[]))</span>
+<span class="p">(</span><span class="k">def </span><span class="nv">cj-fn</span>  <span class="p">(</span><span class="k">fn </span> <span class="p">[</span><span class="nv">o</span> <span class="nv">r</span> <span class="nv">k</span> <span class="nv">p</span> <span class="nv">v</span><span class="p">]</span>  <span class="c1">;; ova, ref, key, prev, current</span>
+                <span class="p">(</span><span class="nf">swap!</span> <span class="nv">watch</span> <span class="nb">conj </span><span class="p">[</span><span class="nv">p</span> <span class="nv">v</span><span class="p">])))</span>
+</pre></div>
+</div><div><a name="see-that-watches-are-set"></a><h4><i>e.9.2  &nbsp;-&nbsp; see that watches are set</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">add-elem-watch</span> <span class="nv">ov</span> <span class="ss">:conj</span> <span class="nv">cj-fn</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">keys </span><span class="p">(</span><span class="nf">get-elem-watches</span> <span class="nv">ov</span><span class="p">))</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="ss">:conj</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="elements-in-ov-are-manipulated"></a><h4><i>e.9.3  &nbsp;-&nbsp; elements in ov are manipulated</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">dosync </span><span class="p">(</span><span class="nf">map!</span> <span class="nv">ov</span> <span class="nb">+ </span><span class="mi">10</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">&lt;&lt;</span> <span class="nv">ov</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span><span class="p">]</span>
+</pre></div>
+</div><div><a name="watch-is-also-changed"></a><h4><i>e.9.4  &nbsp;-&nbsp; watch is also changed</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nb">sort </span><span class="o">@</span><span class="nv">watch</span><span class="p">)</span>
+
+<span class="nv">=&gt;</span> <span class="p">[[</span><span class="mi">1</span> <span class="mi">11</span><span class="p">]</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">12</span><span class="p">]</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="mi">4</span> <span class="mi">14</span><span class="p">]]</span>
+</pre></div>
+</div><div><a name="remove-elem-watch"></a><h3>9.2 &nbsp;&nbsp; remove-elem-watch</h3></div><div><h4><i>e.9.5</i></h4><div class="highlight"><pre><span class="p">(</span><span class="nf">remove-elem-watch</span> <span class="nv">ov</span> <span class="ss">:conj</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">keys </span><span class="p">(</span><span class="nf">get-elem-watches</span> <span class="nv">ov</span><span class="p">))</span>
+
+<span class="nv">=&gt;</span> <span class="nv">nil</span>
+</pre></div>
+</div></section></body><script type="text/javascript">var metas = document.getElementsByTagName('meta');
+var i;
+if (navigator.userAgent.match(/iPhone/i)) {
+  for (i=0; i<metas.length; i++) {
+    if (metas[i].name == "viewport") {
+      metas[i].content = "width=device-width, minimum-scale=1.0, maximum-scale=1.0";
+    }
+  }
+  document.addEventListener("gesturestart", gestureStart, false);
+}
+function gestureStart() {
+  for (i=0; i<metas.length; i++) {
+    if (metas[i].name == "viewport") {
+      metas[i].content = "width=device-width, minimum-scale=0.25, maximum-scale=1.6";
+    }
+  }
+}</script></html>
