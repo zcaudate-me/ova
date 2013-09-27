@@ -35,19 +35,19 @@
 
   (:1 *ova*) => {:val 1, :id :1}
   (*ova* :1) => {:val 1, :id :1}
-  (v/indices *ova*) => #{0 1 2 3}
-  (v/indices *ova* 0) => #{0}
-  (v/indices *ova* 2) => #{2}
-  (v/indices *ova* #{1 2}) => #{1 2}
-  (v/indices *ova* #{0}) => #{0}
-  (v/indices *ova* #{4}) => #{}
-  (v/indices *ova* :1) => #{}
-  (v/indices *ova* [:val odd?]) => #{0 1}
-  (v/indices *ova* #(even? (:val %))) => #{2 3}
-  (v/indices *ova* [:id :1]) => #{0}
-  (v/indices *ova* [:val 1]) => #{0 1}
-  (v/indices *ova* [:val even?]) => #{2 3}
-  (v/indices *ova* [:val even? '(:id (name) (to-int)) odd?]) => #{2}
+  (v/indices *ova*) => [0 1 2 3]
+  (v/indices *ova* 0) => [0]
+  (v/indices *ova* 2) => [2]
+  (v/indices *ova* #{1 2}) => [1 2]
+  (v/indices *ova* #{0}) => [0]
+  (v/indices *ova* #{4}) => []
+  (v/indices *ova* :1) => []
+  (v/indices *ova* [:val odd?]) => [0 1]
+  (v/indices *ova* #(even? (:val %))) => [2 3]
+  (v/indices *ova* [:id :1]) => [0]
+  (v/indices *ova* [:val 1]) => [0 1]
+  (v/indices *ova* [:val even?]) => [2 3]
+  (v/indices *ova* [:val even? '(:id (name) (to-int)) odd?]) => [2]
   )
 
 (fact "select will grab the necessary entries"
@@ -187,74 +187,74 @@
     (dosync (v/!! (v/ova [{:id 1 :val 1} {:id 2 :val 1}]) [:id 1] 0))
     => (is-ova [0 {:id 2 :val 1}]))
 
-(facts "!> merge will operate on maps only"
+(facts "smap! merge will operate on maps only"
   (against-background
     (before :checks
             (def ov (v/ova [{:id 1 :val 1} {:id 2 :val 2} 0]))))
 
-  (dosync (v/!> ov 0 merge {:val 2}))
+  (dosync (v/smap! ov 0 merge {:val 2}))
   => (is-ova [{:id 1 :val 2} {:id 2 :val 2} 0])
 
-  (dosync (v/!> ov 1 merge {:id 3 :val 3 :valb 4}))
+  (dosync (v/smap! ov 1 merge {:id 3 :val 3 :valb 4}))
   => (is-ova [{:id 1 :val 1} {:id 3 :val 3 :valb 4} 0])
-  (dosync (v/!> ov 2 merge))
+  (dosync (v/smap! ov 2 merge))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 2} 0])
-  (dosync (v/!> ov [:id 1] merge {:val 2}))
+  (dosync (v/smap! ov [:id 1] merge {:val 2}))
   => (is-ova [{:id 1 :val 2} {:id 2 :val 2} 0]))
 
-(facts "!> merge using array checks"
+(facts "smap! merge using array checks"
   (against-background
     (before :checks
             (def ov (v/ova [{:id 1 :val 1} {:id 2 :val 2}]))))
 
-  (dosync (v/!> ov [:id 1] merge {:val 2}))
+  (dosync (v/smap! ov [:id 1] merge {:val 2}))
   => (is-ova [{:id 1 :val 2} {:id 2 :val 2}])
-  (dosync (v/!> ov [:val 2] merge {:val 3}))
+  (dosync (v/smap! ov [:val 2] merge {:val 3}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 3}]))
 
-(facts "!> merge using array checks"
+(facts "smap! merge using array checks"
   (against-background
     (before :checks
             (def ov (v/ova [{:id 1 :val 1} {:id 2 :val 1}
                             {:id 3 :val 2} {:id 4 :val 2}]))))
 
-  (dosync (v/!> ov [:id 1] merge {:val 2}))
+  (dosync (v/smap! ov [:id 1] merge {:val 2}))
   => (is-ova [{:id 1 :val 2} {:id 2 :val 1} {:id 3 :val 2} {:id 4 :val 2}])
-  (dosync (v/!> ov [:val 2] merge {:val 3}))
+  (dosync (v/smap! ov [:val 2] merge {:val 3}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 1} {:id 3 :val 3} {:id 4 :val 3}])
-  (dosync (v/!> ov #(odd? (:id %)) merge {:val 3}))
+  (dosync (v/smap! ov #(odd? (:id %)) merge {:val 3}))
   => (is-ova [{:id 1 :val 3} {:id 2 :val 1} {:id 3 :val 3} {:id 4 :val 2}])
-  (dosync (v/!> ov #(even? (:val %)) merge {:val 4}))
+  (dosync (v/smap! ov #(even? (:val %)) merge {:val 4}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 1} {:id 3 :val 4} {:id 4 :val 4}])
-  (dosync (v/!> ov #{1 2} merge {:val 4}))
+  (dosync (v/smap! ov #{1 2} merge {:val 4}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 4} {:id 3 :val 4} {:id 4 :val 2}])
-  (dosync (v/!> ov #{0} merge {:val 4}))
+  (dosync (v/smap! ov #{0} merge {:val 4}))
   => (is-ova [{:id 1 :val 4} {:id 2 :val 1} {:id 3 :val 2} {:id 4 :val 2}])
-  (dosync (v/!> ov #{4} merge {:val 4}))
+  (dosync (v/smap! ov #{4} merge {:val 4}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 1} {:id 3 :val 2} {:id 4 :val 2}])
-  (dosync (v/!> ov [:id odd?] merge {:val 3}))
+  (dosync (v/smap! ov [:id odd?] merge {:val 3}))
   => (is-ova [{:id 1 :val 3} {:id 2 :val 1} {:id 3 :val 3} {:id 4 :val 2}])
-  (dosync (v/!> ov [:val even?] merge {:val 4}))
+  (dosync (v/smap! ov [:val even?] merge {:val 4}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 1} {:id 3 :val 4} {:id 4 :val 4}])
-  (dosync (v/!> ov [:id odd? :val even?] merge {:valb 4}))
+  (dosync (v/smap! ov [:id odd? :val even?] merge {:valb 4}))
   => (is-ova [{:id 1 :val 1} {:id 2 :val 1} {:id 3 :val 2 :valb 4} {:id 4 :val 2}]))
 
-(facts "!> update-in"
+(facts "smap! update-in"
   (against-background
     (before :checks
             (def ov (v/ova [{:id 1 :val {:a 1}}]))))
-  (dosync (v/!> ov [:id 1] update-in [:val :x] (constantly 2)))
+  (dosync (v/smap! ov [:id 1] update-in [:val :x] (constantly 2)))
   => (is-ova [{:id 1 :val {:a 1 :x 2}}])
-  (dosync (v/!> ov [:id 1] update-in [:val :a] (constantly 2)))
+  (dosync (v/smap! ov [:id 1] update-in [:val :a] (constantly 2)))
   => (is-ova [{:id 1 :val {:a 2}}]))
 
-(facts "!> assoc-in"
+(facts "smap! assoc-in"
     (against-background
       (before :checks
               (def ov (v/ova [{:id 1 :val {:a 1}}]))))
-    (dosync (v/!> ov [:id 1] assoc-in [:val :x] 2))
+    (dosync (v/smap! ov [:id 1] assoc-in [:val :x] 2))
     => (is-ova [{:id 1 :val {:a 1 :x 2}}])
-    (dosync (v/!> ov [:id 1] assoc-in [:val :a] 2))
+    (dosync (v/smap! ov [:id 1] assoc-in [:val :a] 2))
     => (is-ova [{:id 1 :val {:a 2}}]))
 
 (facts "testing the add-elem-watch function with map"

@@ -195,34 +195,34 @@
        (dosync (concat! ova coll))
        ova)))
 
-(defn make-elem-change-watch [sel f]
+(defn- make-elem-change-watch [sel f]
   (fn [k ov rf p n]
     (let [pv (get-> p sel)
           nv (get-> n sel)]
-      (if-not (and (nil? pv) (nil? nv)
-                   (= pv nv))
-        (f k ov rf pv nv)))))
+      (cond (or (nil? pv) (nil? nv)
+                (not (= pv nv)))
+            (f k ov rf pv nv)))))
 
 (defn add-elem-change-watch [ov k sel f]
   (add-elem-watch ov k (make-elem-change-watch sel f)))
 
 (defn indices
-  ([ova] (-> (count ova) range set))
+  ([ova] (-> (count ova) range vec))
   ([ova pchk]
     (cond
    (number? pchk)
-   (if (suppress (get ova pchk)) #{pchk} #{})
+   (if (suppress (get ova pchk)) (list pchk) ())
 
    (set? pchk)
-   (set (mapcat #(indices ova %) pchk))
+   (mapcat #(indices ova %) pchk)
 
    :else
-   (set (filter (comp not nil?)
+   (filter (comp not nil?)
                 (map-indexed (fn [i obj]
                                (suppress-pcheck obj pchk i))
-                             ova))))))
+                             ova)))))
 
-(defn <<
+(defn selectv
   ([ova]
       (persistent! ova))
   ([ova pchk]
@@ -230,16 +230,16 @@
           (if-let [val (suppress (get ova pchk))]
             (list val) ())
 
-          (set? pchk) (mapcat #(<< ova %) pchk)
+          (set? pchk) (mapcat #(selectv ova %) pchk)
 
           :else (filter
                  (fn [obj] (suppress-pcheck obj pchk obj))
                  ova))))
 
 (defn select
-  ([ova] (set (<< ova)))
+  ([ova] (set (selectv ova)))
   ([ova pchk]
-     (set (<< ova pchk))))
+     (set (selectv ova pchk))))
 
 (defn has? [ova pchk]
   (-> (select ova pchk) empty? not))
@@ -284,6 +284,11 @@
      (alter (get-ref ova)
             #(sort (fn [x y]
                      (comp @x @y)) %))
+     ova)
+  ([ova sel comp]
+     (alter (get-ref ova)
+            #(sort (fn [x y]
+                     (comp (get-> @x sel) (get-> @y sel))) %))
      ova))
 
 
@@ -311,30 +316,32 @@
   ova)
 
 (defn remove! [ova pchk]
-  (let [idx (indices ova pchk)]
+  (let [idx (set (indices ova pchk))]
     (delete-indices ova idx))
   ova)
 
 (defn filter! [ova pchk]
   (let [idx (set/difference
              (set (range (count ova)))
-             (indices ova pchk))]
+             (set (indices ova pchk)))]
     (delete-indices ova idx))
   ova)
 
 (defn !! [ova pchk val]
   (smap! ova pchk (constantly val)))
 
-(defmacro !> [ova pchk f & args]
-  `(smap! ~ova ~pchk ~f ~@args))
+(defmacro << [& forms]
+  `(let [out# (dosync ~@forms)]
+     (persistent! out#)))
 
-(defmacro !>> [ova pchk & forms]
-  `(do
-     ~@(for [[f & args] forms]
-         `(smap! ~ova ~pchk ~f ~@args))))
-
+(defmacro !>
+  [ova pchk & forms]
+  `(smap! ~ova ~pchk
+          #(-> % ~@forms)))
 
 (comment
+  (<< (def ov (ova [1 2 3 4 5]))
+    (append! ov 6 7 8 9))
   (def ov (ova [{}]))
 
   (dosync (!>> ov 0
@@ -343,5 +350,5 @@
                (assoc :c 3))
           )
 
-  (dosync (!> ov 0 assoc :d 1))
+  (<< (!> ov 0 assoc :d 1))
 )

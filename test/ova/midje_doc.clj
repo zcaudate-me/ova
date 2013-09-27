@@ -2,313 +2,420 @@
   (:require [ova.core :refer :all]
             [midje.sweet :refer :all]))
 
-[[:chapter {:title "Motivation"}]]
-
-"*Isn't the whole point of clojure to move to a more functional style of programming using immutable data structures?*
-
-Yes. Exactly. Clojure has rid of alot of complexity on the jvm by requiring the programmer to think functionally. However, the issue of shared state is still a problem in multithreaded applications. Clojure has `ref`'s and `atom`'s to resolve this issue but they tend to be a little basic.
-
-A typical use case of shared state is an array within a `ref`:
-
- - Elements containing data can be added or removed from an array.
- - The data within each element can change.
- - The data has to be accessible by a number of threads.
-
-In the case above, the best option would be or to construct a `ref` containing a vector of `ref`'s containing data. `ova` is just such a datastructure.
-"    
-
 [[:chapter {:title "Installation"}]]
 
 "Add to `project.clj`"
 
 [[{:numbered false}]]
-(comment [im.chit/ova "0.9.1"])
+(comment [im.chit/ova "0.9.5"])
 
 "All functions are in the `ova.core` namespace."
 
-[[:chapter {:title "Creating"}]]
-[[:section {:title "ova"}]]
-"An `ova` deals with data in a vector."
+[[{:numbered false}]]
+(comment (use 'ova.core))
 
-[[{:title "Creating an ova - primitives"}]]
-(def ov-pr (ova [1 2 3 4]))
+[[:chapter {:title "Motivation"}]]
+
+"An `ova` represents a mutable array of elements. Now, the question should really be asked: why spend so much time writing a mutable array?
+
+**Biased Answer:** because it is the most fully featured and easiest to use array.... *EVER!*
+
+In all seriousness. `ova` has been designed especially for dealing with shared state. Clojure uses `refs` and `atoms` off the shelf to resolve this issue but left out methods to deal with arrays of shared elements. `ova` has been specifically designed for the following use case:
+
+ - Elements (clojure maps) can be added or removed from an array
+ - Element data are accessible and mutated from several threads.
+ - Array itself can also be mutated from several threads.
+
+These type of situations are usally co-ordinated using a external cache store like redis. Ova is not as fully featured as these libraries, but it does have its own benefits:
+
+ - Clean element selection and array manipulation syntax
+ - Watches for both the array and array elements
+ - Designed to work with `dosync` and `refs`
+ - Pure Clojure
+
+`ova` provides the base datastructure used in [`cronj`](https://github.com/zcaudate/cronj), a task scheduling library.
+"
+
+[[:chapter {:title "Walkthrough"}]]
+
+"The key to `ova` lies in the ease of manipulating the postions of elements within an array as well as updating the elements themselves. We begin by constructing and displaying an ova."
+
+[[:section {:title "Constructor"}]]
+[[{:numbered false}]]
 (fact
-(-> ov-pr type str) => "class ova.core.Ova")
+  (def ov
+    (ova [{:val 1} {:val 2}
+          {:val 3} {:val 4}]))
 
-"Although it can deal with primitives, an `ova` is most useful when the elements of the vector are maps."
+  (-> ov class str)
+  => "class ova.core.Ova")
 
-[[{:title "Creating an ova - maps" :tag "ov-data"}]]
+[[:section {:title "Dereferencing"}]]
+"An `ova` is a `ref` of a `vector` of `refs`. They are dereferenced accordingly:"
+[[{:numbered false}]]
 (fact
-  (def RESULTS 
-    [{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-     {:id :a2 :score 15 :name "John"  :gender :m :nationality :aus}
-     {:id :a3 :score 15 :name "Dave"  :gender :m :nationality :aus}
-     {:id :a4 :score 11 :name "Henry" :gender :m :nationality :usa}
-     {:id :a5 :score 20 :name "Scott" :gender :m :nationality :usa}
-     {:id :a6 :score 13 :name "Tom"   :gender :m :nationality :usa}
-     {:id :a7 :score 15 :name "Jill"  :gender :f :nationality :aus}
-     {:id :a8 :score 19 :name "Sally" :gender :f :nationality :usa}
-     {:id :a9 :score 13 :name "Rose"  :gender :f :nationality :aus}])
+  (mapv deref (deref ov))
+  => [{:val 1} {:val 2}
+      {:val 3} {:val 4}]
 
-  (def ov (ova RESULTS))
-  
-  (-> ov-pr type str) => "class ova.core.Ova")
+  (<< ov)                     ;; Shorthand
+  => [{:val 1} {:val 2}
+      {:val 3} {:val 4}])
 
-[[:section {:title "persistent!"}]]
-"Since `ova.core.Ova` implements the `clojure.lang.ITransientCollection` interface, it can be made persistent with `persistent!`."
+[[:section {:title "Append / Insert / Concat"}]]
+"Adding elements to the ova is very straight forward:"
 
+[[{:numbered false}]]
 (fact
-  [[{:title "Make persistent"}]]
-  (persistent! (ova [1 2 3 4])) 
-  => [1 2 3 4]
+  (<< (append! ov {:val 6}))         ;; Append
+  => [{:val 1} {:val 2} {:val 3}
+      {:val 4} {:val 6}]
 
-  [[{:title "Shorthand"}]]
-  (<< (ova [1 2 3 4])) => [1 2 3 4])
+  (<< (insert! ov {:val 5} 4))       ;; Insert
+  => [{:val 1} {:val 2} {:val 3}
+      {:val 4} {:val 5} {:val 6}]
 
-[[:section {:title "reinit!"}]]
+  (<< (concat! ov [{:val 7}          ;; Concat
+                   {:val 8}]))
+  => [{:val 1} {:val 2} {:val 3}
+      {:val 4} {:val 5} {:val 6}
+      {:val 7} {:val 8}])
 
-"`reinit!` resets the data elements in an ova to another set of values."
+[[:section {:title "Select"}]]
+"Where `ova` really shines is in the mechanism by which elements are selected. There are abundant ways of selecting elements - by index, by sets, by vectors, by predicates and by lists. The specific mechanism will be described more clearly in later sections."
 
+[[{:numbered false}]]
 (fact
-  (def ov (ova [1 2 3 4]))
-  (dosync (reinit! ov [5 6 7 8 9]))
-  (persistent! ov)
-  => [5 6 7 8 9])
+  (select ov 0)                      ;; By Index
+  => #{{:val 1}}
 
-[[:chapter {:title "Selecting"}]]
+  (select ov #{0 1})                 ;; By Set of Index
+  => #{{:val 1} {:val 2}}
 
-"Selecting of elements have been made as easy a possible"
+  (select ov {:val 3})               ;; By Item
+  => #{{:val 3}}
 
-(def ov (ova RESULTS))
+  (select ov #{{:val 3} {:val 4}})   ;; By Set of Items
+  => #{{:val 3} {:val 4}}
 
-[[:section {:title "select"}]]
+  (select ov #(-> % :val even?))     ;; By Predicate
+  => #{{:val 2} {:val 4}
+       {:val 6} {:val 8}}
 
-[[:subsection {:title "using index"}]]
+  (select ov '(:val even?))          ;; By List
+  => #{{:val 2} {:val 4}
+       {:val 6} {:val 8}}
+
+  (select ov [:val 3])               ;; By Vector/Value
+  => #{{:val 3}}
+
+  (select ov [:val #{1 2 3}])       ;; By Vector/Set
+  => #{{:val 1} {:val 2} {:val 3}}
+
+  (select ov [:val '(< 4)])         ;; By Vector/List
+  => #{{:val 1} {:val 2} {:val 3}}
+
+  (select ov [:val even?            ;; By Vector/Predicate/List
+              :val '(> 4)])
+  => #{{:val 6} {:val 8}})
+
+[[:section {:title "Remove / Filter"}]]
+"`remove!` and `filter!` also use the same mechanism as `select`:"
+
+[[{:numbered false}]]
 (fact
-  (select ov 0)
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}}
-  (select ov 1)
-  => #{{:id :a2 :score 15 :name "John"  :gender :m :nationality :aus}})
+  (<< (remove! ov 7))               ;; Index Notation
+  => [{:val 1} {:val 2} {:val 3}
+      {:val 4} {:val 5} {:val 6}
+      {:val 7}]
 
-[[:subsection {:title "using vector"}]]
+  (<< (filter! ov #{1 2 3 4 5 6}))  ;; Set Notation
+  => [{:val 2} {:val 3} {:val 4}
+      {:val 5} {:val 6} {:val 7}]
+
+  (<< (filter! ov [:val odd?]))     ;; Vector/Fn Notation
+  => [{:val 3} {:val 5} {:val 7}]
+
+  (<< (remove! ov [:val '(> 3)]))   ;; List Notation
+  => [{:val 3}])
+
+[[:section {:title "Sorting"}]]
+"The `sort!` functions allows elements in the ova to be rearranged. The function becomes clearer to read with access and comparison defined seperately (last example)."
+
+[[{:numbered false}]]
 (fact
-  (select ov [:id :a1])
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}}
-  (select ov [:gender :f])
-  => #{{:id :a7 :score 15 :name "Jill"  :gender :f :nationality :aus}
-       {:id :a8 :score 19 :name "Sally" :gender :f :nationality :usa}
-       {:id :a9 :score 13 :name "Rose"  :gender :f :nationality :aus}}
-  (select ov [:score 13])
-  => #{{:id :a6 :score 13 :name "Tom"   :gender :m :nationality :usa}
-       {:id :a9 :score 13 :name "Rose"  :gender :f :nationality :aus}}
-  (select ov [:score even?])
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-       {:id :a5 :score 20 :name "Scott" :gender :m :nationality :usa}}
-       
-  (select ov #(-> % :score (< 13)))
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-      {:id :a4 :score 11 :name "Henry" :gender :m :nationality :usa}}
-      
-  (select ov [:score '(< 13)])
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-       {:id :a4 :score 11 :name "Henry" :gender :m :nationality :usa}}
-       
-  (select ov [:score 13 :gender :f])
-  => #{{:id :a9 :score 13 :name "Rose"  :gender :f :nationality :aus}}
+  (def ov (ova (map (fn [n] {:val n})
+                    (range 8))))
+
+  (<< ov)
+  => [{:val 0} {:val 1} {:val 2}
+      {:val 3} {:val 4} {:val 5}
+      {:val 6} {:val 7}]
+
+  (<< (sort! ov (fn [a b]          ;; Fn
+                  (> (:val a)
+                     (:val b)))))
+  => [{:val 7} {:val 6} {:val 5}
+      {:val 4} {:val 3} {:val 2}
+      {:val 1} {:val 0}]
+
+  (<< (sort! ov [:val] <))         ;; Accessor/Comparater
+  => [{:val 0} {:val 1} {:val 2}
+      {:val 3} {:val 4} {:val 5}
+      {:val 6} {:val 7}])
+
+[[:section {:title "Manipulation"}]]
+"Using the same mechanism as `select`, bulk update of elements within the `ova` can be performed in a succint manner:"
+
+[[{:numbered false}]]
+(fact
+  (def ov (ova (map (fn [n] {:val n})
+                    (range 4))))
+
+  (<< ov)
+  => [{:val 0} {:val 1} {:val 2} {:val 3}]
+
+  (<< (map! ov update-in [:val] inc))        ;; map! updates all elements
+  => [{:val 1} {:val 2} {:val 3} {:val 4}]
+
+  (<< (smap! ov [:val odd?]                  ;; update only odd elements
+             update-in [:val] #(+ 10 %)))
+  => [{:val 11} {:val 2} {:val 13} {:val 4}]
+
+  (<< (smap! ov 0 update-in                     ;; update element at index 0
+          [:val] #(- % 10)))
+  => [{:val 1} {:val 2} {:val 13} {:val 4}]
+
+  (<< (smap! ov [:val 13]                       ;; update element with :val of 13
+          update-in [:val] #(- % 10)))
+  => [{:val 1} {:val 2} {:val 3} {:val 4}]
+
+  (<< (smap! ov [:val even?]                    ;; assoc new data to even :vals
+          assoc-in [:x :y :z] 10))
+  => [{:val 1} {:val 2 :x {:y {:z 10}}}
+      {:val 3} {:val 4 :x {:y {:z 10}}}]
+
+  (<< (smap! ov [:x :y :z] dissoc :x))          ;; dissoc :x for elements with nested [:x :y :z] keys
+  => [{:val 1} {:val 2} {:val 3} {:val 4}]
   )
 
-[[:subsection {:title "nested maps"}]]
+
+[[:section {:title "Ova Watch"}]]
+"Because a ova is simply a ref, it can be watched for changes"
+
+[[{:numbered false}]]
 (fact
-  (select (ova [{:l1 {:l2 {:l3 "val"}}}])
-          [[:l1 :l2 :l3] "val"])
-  => #{{:l1 {:l2 {:l3 "val"}}}}
+  (def ov (ova [0 1 2 3 4 5]))
 
-  (select (ova [{:l1 {:l2 {:l3 "val"} 
-                     :flag true}}])
-          #(-> % :l1 :flag))
-  => #{{:l1 {:l2 {:l3 "val"}
-             :flag true}}}
+  (def output (atom []))
+  (add-watch ov
+             :old-new
+             (fn [ov k p n]
+               (swap! output conj [(mapv deref p)
+                                   (mapv deref n)])))
 
-  (select (ova [{:l1 {:l2 {:l3 "val"} 
-                     :flag true}}])
-          [:l1 '(:flag)])
-  => #{{:l1 {:l2 {:l3 "val"}
-             :flag true}}}
-  
-  (select (ova [{:l1 {:l2 {:l3 "val"} 
-                     :flag true}}])
-          [[:l1 :flag] true])
-  => #{{:l1 {:l2 {:l3 "val"}
-             :flag true}}}
-             
-  
-  (select (ova [{:l1 {:l2 {:l3 "val"} 
-                     :flag true}}])
-          [[:l1 :l2 :l3] "val" [:l1 :flag] true])
-  => #{{:l1 {:l2 {:l3 "val"}
-            :flag true}}})
+  (do (dosync (sort! ov >))
+      (deref output))
+  => [[[0 1 2 3 4 5]
+       [5 4 3 2 1 0]]])
 
-[[:subsection {:title "using sets"}]]
+[[:section {:title "Element Watch"}]]
+"Entire elements of the ova can be watched."
+
+[[{:numbered false}]]
 (fact
-  (select ov #{0 1})
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-       {:id :a2 :score 15 :name "John"  :gender :m :nationality :aus}}
-       
-  (select ov #{[:score even?] [:score 13 :gender :f]})
-  => #{{:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-       {:id :a5 :score 20 :name "Scott" :gender :m :nationality :usa}
-       {:id :a9 :score 13 :name "Rose"  :gender :f :nationality :aus}})
+  (def ov (ova [0 1 2 3 4 5]))
 
+  (def output (atom []))
+  (add-elem-watch ov
+             :elem-old-new
+             (fn [ov r k p n]
+               (swap! output conj [p n])))
 
+  (<< (!! ov 0 :zero))
+  => [:zero 1 2 3 4 5]
 
-[[:section {:title "IFn"}]]
-[[:subsection {:title "using index"}]]
+  (deref output)
+  => [[0 :zero]]
 
+  (<< (!! ov 3 :three))
+  => [:zero 1 2 :three 4 5]
+
+  (deref output)
+  => [[0 :zero] [3 :three]])
+
+[[:subsection {:title "Element Change Watch"}]]
+"The `add-elem-change-watch` function can be used to only notify when an element has changed."
+
+[[{:numbered false}]]
 (fact
+  (def ov (ova [0 1 2 3 4 5]))
+
+  (def output (atom []))
+  (add-elem-change-watch
+   ov
+   :elem-old-new
+   identity
+   (fn [ov r k p n]
+     (swap! output conj [p n])))
+
+  (do (<< (!! ov 0 :zero))  ;; a pair is added to output
+      (deref output))
+  => [[0 :zero]]
+
+  (do (<< (!! ov 0 0))      ;; another pair is added to output
+      (deref output))
+  => [[0 :zero] [:zero 0]]
+
+  (do (<< (!! ov 0 0))      ;; no change to output
+      (deref output))
+  => [[0 :zero] [:zero 0]]
+)
+
+[[:section {:title "Clojure Protocols"}]]
+"`ova` also implements `ITransientVector`"
+
+[[{:numbered false}]]
+(fact
+  (def ov (ova (map (fn [n] {:val n})
+                    (range 8))))
+
+  (seq ov)
+  => '({:val 0} {:val 1} {:val 2}
+       {:val 3} {:val 4} {:val 5}
+       {:val 6} {:val 7})
+
+  (count ov)
+  => 8
+
+  (get ov 0)
+  => {:val 0}
+
+  (nth ov 3)
+  => {:val 3}
+
   (ov 0)
-  => {:id :a1 :score 10 :name "Bill"  :gender :m :nationality :aus}
-  (ov 1)
-  => {:id :a2 :score 15 :name "John"  :gender :m :nationality :aus})
+  => {:val 0}
 
-[[:subsection {:title "using ids"}]]
+  (ov [:val] #{1 2 3}) ;; Gets the first that matches
+  => {:val 1}
+  )
+
+[[:chapter {:title "Indices Selection"}]]
+
+"There are a number of ways elements in an `ova` can be selected. The library uses custom syntax to provide a shorthand for element selection. We use the function `indices` in order to give an examples of how searches can be expressed. Most of the functions like `select`, `remove!`, `filter!`, `smap!`, `smap-indexed!`, and convenience macros are all built on top of the `indices` function and so can be used accordingly once the convention is understood."
+
+[[:section {:title "by index"}]]
+"The most straight-forward being the index itself, represented using a number."
+
+[[{:numbered false}]]
 (fact
-  (ov :a3)
-  => {:id :a3 :score 15 :name "Dave"  :gender :m :nationality :aus}
-  (:a3 ov)
-  => {:id :a3 :score 15 :name "Dave"  :gender :m :nationality :aus})
+  (def ov (ova [{:v 0, :a {:c 4}}    ;; 0
+                {:v 1, :a {:d 3}}    ;; 1
+                {:v 2, :b {:c 2}}    ;; 2
+                {:v 3, :b {:d 1}}])) ;; 3
 
-[[:subsection {:title "not found"}]]
+  (indices ov)           ;; return all indices
+  => [0 1 2 3]
+
+  (indices ov 0)         ;; return indices of the 0th element
+  => [0]
+
+  (indices ov 10)        ;; return indices of the 10th element
+  => [])
+
+[[:section {:title "by value"}]]
+"A less common way is to search for indices by value."
+
+[[{:numbered false}]]
 (fact
-  (ov :a10)
-  => nil)
+  (indices ov            ;; return indices of elements matching term
+           {:v 0 :a {:c 4}})
+  => [0])
 
-[[:chapter {:title "Inserting"}]]
-[[:section {:title "append!"}]]
+
+[[:section {:title "by predicate"}]]
+"Most of the time, predicates are used. They allow selection of any element returning a non-nil value when evaluated against the predicate. Predicates can take the form of functions, keywords or list representation."
+
+[[{:numbered false}]]
 (fact
-  (def ov (ova [1 2 3 4]))
-  (dosync (append! ov 5 6 7 8)) 
-  (<< ov) => [1 2 3 4 5 6 7 8])
-  
-[[:section {:title "concat!"}]]
+  (indices ov #(get % :a))   ;; retur indicies where (:a elem) is non-nil
+
+  => [0 1]
+
+  (indices ov #(:a %))       ;; more succint function form
+
+  => [0 1]
+
+  (indices ov :a)            ;; keyword form, same as #(:a %)
+
+  => [0 1]
+
+  (indices ov '(get :a))     ;; list form, same as #(get % :a)
+
+  => [0 1]
+
+  (indices ov '(:a))         ;; list form, same as #(:a %)
+
+  => [0 1])
+
+[[:section {:title "by sets (or)"}]]
+"sets can be used to compose more complex searches by acting as an `union` operator over its members"
+
+[[{:numbered false}]]
 (fact
-  (def ov (ova [1 2 3 4]))
-  (dosync (concat! ov [5 6 7 8])) 
-  (<< ov) => [1 2 3 4 5 6 7 8])
+  (indices ov #{0 1})        ;; return indices 0 and 1
+  => [0 1]
 
+  (indices ov #{:a 2})       ;; return indices of searching for both 2 and :a
+  => (just [0 1 2] :in-any-order)
 
-[[:section {:title "insert!"}]]
+  (indices ov #{'(:a)        ;; a more complex example
+                #(= (:v %) 2)})
+  => (just [0 1 2] :in-any-order))
+
+[[:section {:title "by vectors (and)"}]]
+"vectors can be used to combine predicates for more selective filtering of elements"
+
+[[{:numbered false}]]
 (fact
-  (def ov (ova [:a :b :c :e :f]))
-  (dosync (insert! ov :d 3)) 
-  (<< ov) => [:a :b :c :d :e :f])
+  (indices ov [:v 0])        ;; return indicies where (:a ele) = {:c 4}
+  => [0]
+
+  (indices ov [:v '(= 0)])   ;; return indicies where (:a ele) = {:c 4}
+  => [0]
+
+  (indices ov [:a #(% :c)])  ;; return indicies where (:a ele) has a :c element
+  => [0]
+
+  (indices ov [:a '(:c)])    ;; with list predicate
+  => [0]
+
+  (indices ov [:a :c])       ;; with keyword predicate
+  => [0]
+
+  (indices ov [:v odd?       ;; combining predicates
+               :v '(> 1)])
+  => [3]
+
+  (indices ov #{[:a :c] 2})  ;; used within a set
+
+  => (just [0 2] :in-any-order))
 
 
-[[:chapter {:title "Deleting"}]]
-[[:section {:title "empty!"}]]
+[[:section {:title "accessing nested elements"}]]
+"When dealing with nested maps, a vector can be used instead of a keyword to specify rules of selection using nested elements"
 (fact
-  (def ov (ova [:a :b :c :d]))
-  (dosync (empty! ov)) 
-  (<< ov) => [])
+  (indices ov [[:b :c] 2])   ;; with value
+  => [2]
+
+  (indices ov [[:v] '(< 3)]) ;; with predicate
+  => [0 1 2]
+
+  (indices ov [:v 2          ;; combining in vector
+               [:b :c] 2])
+  => [2])
 
 
-[[:section {:title "remove!"}]]
-(fact
-  (def ov (ova [:a :b :c :d]))
-  (dosync (remove! ov '(= :a))) 
-  (<< ov) => [:b :c :d])
-
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (remove! ov #{'(< 3) '(> 6)})) 
-  (<< ov) => [3 4 5 6])
-
-[[:section {:title "filter!"}]]
-(fact
-  (def ov (ova [:a :b :c :d]))
-  (dosync (filter! ov '(= :a))) 
-  (<< ov) => [:a])
-
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (filter! ov #{'(< 3) '(> 6)})) 
-  (<< ov) => [1 2 7 8 9])
-  
-[[:chapter {:title "Sorting"}]]
-[[:section {:title "sort!"}]]
-(fact
-  (def ov (ova [9 8 7 6 5 4 3 2 1]))
-  (dosync (sort! ov <)) 
-  (<< ov) => [1 2 3 4 5 6 7 8 9])
-
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (sort! ov >)) 
-  (<< ov) => [9 8 7 6 5 4 3 2 1])
-
-[[:section {:title "reverse!"}]]
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (reverse! ov)) 
-  (<< ov) => [9 8 7 6 5 4 3 2 1])
-
-[[:chapter {:title "Updating"}]]
-[[:section {:title "!!"}]]
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (!! ov 0 0)) 
-  (<< ov) => [0 2 3 4 5 6 7 8 9])
-
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (!! ov odd? 0)) 
-  (<< ov) => [0 2 0 4 0 6 0 8 0])
-
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (!! ov '(> 4) 0)) 
-  (<< ov) => [1 2 3 4 0 0 0 0 0])
-
-[[:section {:title "map!"}]]
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (map! ov inc)) 
-  (<< ov) => [2 3 4 5 6 7 8 9 10])
-
-
-[[:section {:title "smap!"}]]
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (smap! ov odd? inc)) 
-  (<< ov) => [2 2 4 4 6 6 8 8 10])
-
-(fact
-  (def ov (ova [1 2 3 4 5 6 7 8 9]))
-  (dosync (!> ov odd? inc)) 
-  (<< ov) => [2 2 4 4 6 6 8 8 10])
-
-[[:chapter {:title "Watch for Changes"}]]
-[[:section {:title "add-elem-watch"}]]
-(fact 
-  (def ov     (ova [1 2 3 4]))
-  (def watch  (atom []))
-  (def cj-fn  (fn  [o r k p v]  ;; ova, ref, key, prev, current
-                (swap! watch conj [p v]))) 
-  
-  [[{:title "see that watches are set"}]]
-  (add-elem-watch ov :conj cj-fn)
-  (keys (get-elem-watches ov))
-  => [:conj]
-
-  [[{:title "elements in ov are manipulated"}]]
-  (dosync (map! ov + 10))
-  (<< ov) => [11 12 13 14]
-
-  [[{:title "watch is also changed"}]]  
-  (sort @watch) => [[1 11] [2 12] [3 13] [4 14]])
-
-[[:section {:title "remove-elem-watch"}]]
-(fact   
-  (remove-elem-watch ov :conj)
-  (keys (get-elem-watches ov))
-  => nil)
+[[:file {:src "test/ova/api.clj"}]]
 

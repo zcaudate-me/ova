@@ -6,7 +6,7 @@ Stateful Arrays for clojure
 
 Add to `project.clj`
 
-    [im.chit/ova "0.9.1"]
+    [im.chit/ova "0.9.5"]
    
 All functions are in the `ova.core` namespace.
 
