@@ -1,9 +1,8 @@
-(ns ova.api
+(ns midje-doc.ova-api
   (:require [ova.core :refer :all]
             [midje.sweet :refer :all]))
 
 [[:chapter {:title "API Reference"}]]
-
 
 [[:section {:title "Basics"}]]
 [[:subsection {:title "ova"}]]
@@ -132,9 +131,10 @@
 [[{:numbered false}]]
 (fact
   (selectv players #{[:score even?] [:score 13 [:info :gender] :f]})
-  => [{:id :a1 :score 10 :info {:name "Bill"  :gender :m :nationality :aus}}
-      {:id :a5 :score 20 :info {:name "Scott" :gender :m :nationality :usa}}
-      {:id :a9 :score 13 :info {:name "Rose"  :gender :f :nationality :aus}}])
+  => (just [{:id :a1 :score 10 :info {:name "Bill"  :gender :m :nationality :aus}}
+            {:id :a5 :score 20 :info {:name "Scott" :gender :m :nationality :usa}}
+            {:id :a9 :score 13 :info {:name "Rose"  :gender :f :nationality :aus}}]
+           :in-any-order))
 
 
 
@@ -320,7 +320,7 @@
 
 [[{:numbered false}]]
 (comment
-  (fn [o r k p v]  ;; ova, ref, key, prev, current
+  (fn [k o r p v]  ;; key, ova, ref, prev, current
     (... do something ...)))
 
 [[:subsection {:title "get-elem-watch"}]]
@@ -335,7 +335,7 @@
 (fact
   (def ov     (ova [1 2 3 4]))
   (def watch  (atom []))
-  (def cj-fn  (fn  [o r k p v]  ;; ova, ref, key, prev, current
+  (def cj-fn  (fn  [k o r p v]  ;; key, ova, ref, prev, current
                 (swap! watch conj [p v])))
 
   (add-elem-watch ov :conj cj-fn) ;; add watch
@@ -357,3 +357,7 @@
   (remove-elem-watch ov :conj)
   (keys (get-elem-watches ov))
   => nil)
+
+[[:subsection {:title "add-elem-change-watch"}]]
+
+"`add-elem-change-watch` only updates when part of the array changes. This is a really useful abstraction when the element is a big nested map. This is the same as `add-elem-watch` though an additional selector is needed to determine if the expected part of the element has change. Its usage can be seen in the [example](#scoreboard-example)"

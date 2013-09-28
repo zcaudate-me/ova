@@ -199,7 +199,10 @@
   (fn [k ov rf p n]
     (let [pv (get-> p sel)
           nv (get-> n sel)]
-      (cond (or (nil? pv) (nil? nv)
+      (cond (and (nil? pv) (nil? nv))
+            nil
+
+            (or (nil? pv) (nil? nv)
                 (not (= pv nv)))
             (f k ov rf pv nv)))))
 

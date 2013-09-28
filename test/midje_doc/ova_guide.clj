@@ -1,4 +1,4 @@
-(ns ova.midje-doc
+(ns midje-doc.ova-guide
   (:require [ova.core :refer :all]
             [midje.sweet :refer :all]))
 
@@ -7,7 +7,7 @@
 "Add to `project.clj`"
 
 [[{:numbered false}]]
-(comment [im.chit/ova "0.9.5"])
+(comment [im.chit/ova "0.9.6"])
 
 "All functions are in the `ova.core` namespace."
 
@@ -16,24 +16,24 @@
 
 [[:chapter {:title "Motivation"}]]
 
-"An `ova` represents a mutable array of elements. Now, the question should really be asked: why spend so much time writing a mutable array?
+"An `ova` represents a mutable array of elements. The question should really be asked: Why?
 
-**Biased Answer:** because it is the most fully featured and easiest to use array.... *EVER!*
+**Biased Answer:** Because it is the most fully featured and *bestest* mutable array.... *EVER!*
 
-In all seriousness. `ova` has been designed especially for dealing with shared state. Clojure uses `refs` and `atoms` off the shelf to resolve this issue but left out methods to deal with arrays of shared elements. `ova` has been specifically designed for the following use case:
+In all seriousness, `ova` has been designed especially for dealing with shared mutable state in multi-threaded applications. Clojure uses `refs` and `atoms` off the shelf to resolve this issue but left out methods to deal with arrays of shared elements. `ova` has been specifically designed for the following use case:
 
- - Elements (clojure maps) can be added or removed from an array
+ - Elements (usually clojure maps) can be added or removed from an array
  - Element data are accessible and mutated from several threads.
  - Array itself can also be mutated from several threads.
 
-These type of situations are usally co-ordinated using a external cache store like redis. Ova is not as fully featured as these libraries, but it does have its own benefits:
+These type of situations are usally co-ordinated using a external cache store like redis. Ova is no where near as fully featured as these libraries. The actual `ova` datastructure is a `ref` containing a `vector` containing ref. The library comes with a whole bundle of goodies to deal with mutation:
 
  - Clean element selection and array manipulation syntax
  - Watches for both the array and array elements
- - Designed to work with `dosync` and `refs`
- - Pure Clojure
+ - Designed to play nicely with `dosync` and `refs`
+ - Pure clojure
 
-`ova` provides the base datastructure used in [`cronj`](https://github.com/zcaudate/cronj), a task scheduling library.
+The library has been abstracted out of [cronj](https://github.com/zcaudate/cronj), a task scheduling library where it is used to track and manipulate shared state. The `ova` syntax abstracts away alot of clutter. An example of tracking state in a multi-threaded environment can be seen in a [scoreboard example](#scoreboard-example):
 "
 
 [[:chapter {:title "Walkthrough"}]]
@@ -220,17 +220,18 @@ These type of situations are usally co-ordinated using a external cache store li
        [5 4 3 2 1 0]]])
 
 [[:section {:title "Element Watch"}]]
-"Entire elements of the ova can be watched."
+"Entire elements of the ova can be watched. A more substantial example can be seen in the [scoreboard example](#scoreboard-example):"
 
 [[{:numbered false}]]
 (fact
   (def ov (ova [0 1 2 3 4 5]))
 
   (def output (atom []))
-  (add-elem-watch ov
-             :elem-old-new
-             (fn [ov r k p n]
-               (swap! output conj [p n])))
+
+  (add-elem-watch      ;; key, ova, ref, previous, next
+      ov :elem-old-new
+      (fn [k o r p n]
+        (swap! output conj [p n])))
 
   (<< (!! ov 0 :zero))
   => [:zero 1 2 3 4 5]
@@ -252,12 +253,11 @@ These type of situations are usally co-ordinated using a external cache store li
   (def ov (ova [0 1 2 3 4 5]))
 
   (def output (atom []))
-  (add-elem-change-watch
-   ov
-   :elem-old-new
-   identity
-   (fn [ov r k p n]
-     (swap! output conj [p n])))
+
+  (add-elem-change-watch   ;; key, ova, ref, previous, next
+     ov :elem-old-new  identity
+     (fn [k o r p n]
+       (swap! output conj [p n])))
 
   (do (<< (!! ov 0 :zero))  ;; a pair is added to output
       (deref output))
@@ -273,7 +273,7 @@ These type of situations are usally co-ordinated using a external cache store li
 )
 
 [[:section {:title "Clojure Protocols"}]]
-"`ova` also implements `ITransientVector`"
+"`ova` implements the sequence protocol so it is compatible with all the bread and butter methods."
 
 [[{:numbered false}]]
 (fact
@@ -284,6 +284,14 @@ These type of situations are usally co-ordinated using a external cache store li
   => '({:val 0} {:val 1} {:val 2}
        {:val 3} {:val 4} {:val 5}
        {:val 6} {:val 7})
+
+  (map #(update-in % [:val] inc) ov)
+  => '({:val 1} {:val 2} {:val 3}
+       {:val 4} {:val 5} {:val 6}
+       {:val 7} {:val 8})
+
+  (last ov)
+  => {:val 7}
 
   (count ov)
   => 8
@@ -417,5 +425,13 @@ These type of situations are usally co-ordinated using a external cache store li
   => [2])
 
 
-[[:file {:src "test/ova/api.clj"}]]
+[[:file {:src "test/midje_doc/ova_api.clj"}]]
 
+[[:file {:src "test/midje_doc/ova_scoreboard_example.clj"}]]
+
+[[:chapter {:title "End Notes"}]]
+
+"For any feedback, requests and comments, please feel free to lodge an issue on github or contact me directly.
+
+Chris.
+"

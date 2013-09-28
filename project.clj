@@ -1,4 +1,4 @@
-(defproject im.chit/ova "0.9.5"
+(defproject im.chit/ova "0.9.6"
   :description "Stateful arrays for clojure"
   :url "http://github.com/zcaudate/ova"
   :license {:name "The MIT License"
@@ -7,7 +7,7 @@
                  [im.chit/hara "1.0.1"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
   :documentation {:files {"index"
-                          {:input "test/ova/midje_doc.clj"
+                          {:input "test/midje_doc/ova_guide.clj"
                            :title "ova"
                            :sub-title "stateful arrays for clojure"
                            :author "Chris Zheng"
