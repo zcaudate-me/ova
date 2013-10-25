@@ -14,7 +14,7 @@ All functions are in the `ova.core` namespace.
 
 See main site at:
 
-http://z.caudate.me/ova/
+http://docs.caudate.me/ova/
 
 To generate this document for offline use: 
 
