@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [im.chit/hara "1.0.1"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
-  :documentation {:files {"index"
+  :documentation {:files {"doc/index"
                           {:input "test/midje_doc/ova_guide.clj"
                            :title "ova"
                            :sub-title "stateful arrays for clojure"
