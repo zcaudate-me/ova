@@ -2,6 +2,14 @@
 
 stateful arrays for clojure
 
+### Installation
+
+Add to `project.clj`
+
+    [im.chit/ova "0.9.6"]
+
+All functions are in the `ova.core` namespace.
+
 ### Documentation
 
 See main site at:
