@@ -2,14 +2,6 @@
 
 stateful arrays for clojure
 
-### Installation
-
-Add to `project.clj`
-
-    [im.chit/ova "0.9.6"]
-
-All functions are in the `ova.core` namespace.
-
 ### Documentation
 
 See main site at:
@@ -26,10 +18,10 @@ To generate this document for offline use:
   
   3. Run in project folder
   
+    > mkdir doc
     > lein midje-doc
 
-The output will be generated in `<root>/index.html`
-
+The output will be generated in `doc/index.html`
 
 ## License
 Copyright © 2013 Chris Zheng
