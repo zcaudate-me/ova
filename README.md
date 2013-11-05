@@ -25,16 +25,15 @@ To generate this document for offline use:
   2. Install [lein-midje-doc](http://docs.caudate.me/lein-midje-doc). 
   
   3. Create `doc` folder
-      > mkdir doc
+      
+    > mkdir doc
 
   4. Run in project folder
   
-      > lein midje-doc
+    > lein midje-doc
 
 The output will be generated in `doc/index.html`
 
-
-The output will be generated in `doc/index.html`
 
 ## License
 Copyright © 2013 Chris Zheng
