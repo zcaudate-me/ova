@@ -1,7 +1,8 @@
 # ova
-[![Build Status](https://travis-ci.org/zcaudate/ova.png?branch=master)](https://travis-ci.org/zcaudate/ova)
 
 stateful arrays for clojure
+
+[![Build Status](https://travis-ci.org/zcaudate/ova.png?branch=master)](https://travis-ci.org/zcaudate/ova)
 
 ### Installation
 
