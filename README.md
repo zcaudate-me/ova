@@ -36,13 +36,10 @@ To generate this document for offline use:
 
 The output will be generated in `doc/index.html`
 
-<<<<<<< HEAD
 ### Blog
 
 See [You took 3 months to write a mutable array for clojure?](http://z.caudate.me/you-took-3-months-to-write-a-mutable-array/) for motivation and write up.
 
-=======
->>>>>>> 03acce27953f33c44c06444240ad998eb9af70a2
 
 ## License
 Copyright © 2013 Chris Zheng
