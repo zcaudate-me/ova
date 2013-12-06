@@ -347,7 +347,7 @@
     (append! ov 6 7 8 9))
   (def ov (ova [{}]))
 
-  (dosync (!>> ov 0
+  (dosync (!> ov 0
                (assoc-in [:a :b] 1)
                (update-in [:a :b] inc)
                (assoc :c 3))

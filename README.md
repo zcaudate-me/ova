@@ -1,4 +1,5 @@
 # ova
+[![Build Status](https://travis-ci.org/zcaudate/ova.png?branch=master)](https://travis-ci.org/zcaudate/ova)
 
 stateful arrays for clojure
 
@@ -6,9 +7,9 @@ stateful arrays for clojure
 
 Add to `project.clj`
 
-    [im.chit/ova "0.9.6"]
+    [im.chit/ova "1.0.1"]
 
-All functions are in the `ova.core` namespace.
+All functions are in the `ova.core` namespace. 
 
 ### Documentation
 
@@ -30,6 +31,11 @@ To generate this document for offline use:
     > lein midje-doc
 
 The output will be generated in `doc/index.html`
+
+### Blog
+
+See [You took 3 months to write a mutable array for clojure?](http://z.caudate.me/you-took-3-months-to-write-a-mutable-array/) for motivation and write up.
+
 
 ## License
 Copyright © 2013 Chris Zheng
