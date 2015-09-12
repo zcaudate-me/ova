@@ -4,6 +4,10 @@ stateful arrays for clojure
 
 [![Build Status](https://travis-ci.org/zcaudate/ova.png?branch=master)](https://travis-ci.org/zcaudate/ova)
 
+## DEPRECATION NOTICE
+
+[ova](https://github.com/zcaudate/ova) has been merged into [hara](https://github.com/zcaudate/hara). Please see [updated docs](http://docs.caudate.me/hara/hara-concurrent-ova.html) for updated version.
+
 ### Installation
 
 Add to `project.clj`
